@@ -1,0 +1,49 @@
+service: pp-aws-serveless-app
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+  region: eu-west-1
+  environment:
+    NODE_ENV: dev
+
+plugins:
+  - serverless-plugin-typescript 
+  - serverless-offline
+
+package:
+  include:
+    - .env
+
+functions:
+  findTrades:
+    handler: src/handlers/tradeHandler.findTrades
+    events:
+      - http:
+          path: trades
+          method: get
+  createTrade:
+    handler: src/handlers/tradeHandler.createTrade
+    events:
+      - http:
+          path: trade
+          method: post
+  updateTrade:
+    handler: src/handlers/tradeHandler.updateTrade
+    events:
+      - http:
+          path: trade
+          method: put
+  deleteTrade:
+    handler: src/handlers/tradeHandler.deleteTrade
+    events:
+      - http:
+          path: trade/{id}
+          method: delete
+  findTradeById:
+    handler: src/handlers/tradeHandler.findTradeById
+    events:
+      - http:
+          path: trade/{id}
+          method: get
